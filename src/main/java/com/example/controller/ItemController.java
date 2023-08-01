@@ -1,5 +1,8 @@
 package com.example.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.entity.Item;
 import com.example.form.ItemForm;
+import com.example.service.ItemService;
 
 @Controller
 @RequestMapping("/item")
@@ -17,13 +22,21 @@ public class ItemController {
     // 商品一覧の表示
     @GetMapping
     public String index(Model model) {
-        return "item/index";
+    	// データの疎通確認
+        List<Item> items = this.itemService.findAll();
+        // コンソールよりListの中身を確認する
+        //System.out.println(items.toString());
+        
+     // 画面で利用する変数としてitemsをセットします
+        model.addAttribute("items", items);
+    	return "item/index";
     }
 
     // 商品登録ページ表示用
     @GetMapping("toroku")
     public String torokuPage(@ModelAttribute("itemForm") ItemForm itemForm) {
         // 処理を追加
+    	// templates\item\torokuPage.htmlを表示
         return "item/torokuPage";
     }
 
@@ -31,14 +44,25 @@ public class ItemController {
     @PostMapping("toroku")
     public String toroku(ItemForm itemForm) {
         // 処理を追加
+    	this.itemService.save(itemForm);
+        // 一覧ページへリダイレクトする
         return "redirect:/item";
     }
 
     // 商品編集ページ
     @GetMapping("henshu/{id}")
     public String henshuPage(@PathVariable("id") Integer id, Model model
-                             , @ModelAttribute("itemForm") ItemForm itemForm) {
+    		             , @ModelAttribute("itemForm") ItemForm itemForm) {
         // 処理を追加
+    	
+    	// Entityクラスのインスタンスをidより検索し取得
+        Item item = this.itemService.findById(id);
+        // フィールドのセットを行う
+        itemForm.setName(item.getName());
+        itemForm.setPrice(item.getPrice());
+        // idをセット
+        model.addAttribute("id", id);
+        // templates/item/henshuPageを表示
         return "item/henshuPage";
     }
 
@@ -57,4 +81,11 @@ public class ItemController {
         return "redirect:/item";
     }
 
+    
+    private final ItemService itemService;
+
+    @Autowired
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
 }
