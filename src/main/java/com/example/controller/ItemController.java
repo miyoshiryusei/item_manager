@@ -70,7 +70,7 @@ public class ItemController {
     @PostMapping("henshu/{id}")
     public String henshu(@PathVariable("id") Integer id, @ModelAttribute("itemForm") ItemForm itemForm) {
         // 処理を追加
-
+    	this.itemService.update(id, itemForm);
         return "redirect:/item";
     }
 
@@ -78,6 +78,7 @@ public class ItemController {
     @PostMapping("sakujo/{id}")
     public String sakujo(@PathVariable("id") Integer id) {
         // 処理を追加
+    	this.itemService.delete(id);
         return "redirect:/item";
     }
 

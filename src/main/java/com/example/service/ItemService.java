@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,21 @@ public class ItemService {
         Optional<Item> optionalItem = this.itemRepository.findById(id);
         Item item  = optionalItem.get();
         return item;
+    }
+    
+ // データ更新用のメソッド
+    public Item update(Integer id, ItemForm itemForm) {
+        // データ１件分のEntityクラスを取得
+        Item item = this.findById(id);
+        // Formクラスのフィールドをセットする
+        item.setName(itemForm.getName());
+        item.setPrice(itemForm.getPrice());
+        // repository.saveメソッドを利用してデータの保存を行う
+        return this.itemRepository.save(item);
+    }
+    
+ // データ削除用のメソッド
+    public void delete(Integer id) {
+        this.itemRepository.deleteById(id);
     }
 }
