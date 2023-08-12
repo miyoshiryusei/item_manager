@@ -23,7 +23,16 @@
             <input type="number" th:field="*{price}" placeholder="価格を入力してください">
         </div>
         <div>
-            <input type="submit" name="send" value="登録する">
+            <label>カテゴリ名</label>
+        </div>
+        <div>
+            <!-- itemFormのcategoryIdと一致したcategoryが選択された状態となる -->
+            <select th:field="*{categoryId}">
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+            </select>
+        </div>
+        <div>
+            <input type="submit" name="send" value="編集する">
         </div>
         <div>
             <!-- 一覧に戻る -->
