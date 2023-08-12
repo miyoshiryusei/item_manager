@@ -23,13 +23,20 @@ public class ItemController {
     @GetMapping
     public String index(Model model) {
     	// データの疎通確認
-        List<Item> items = this.itemService.findAll();
+        //List<Item> items = this.itemService.findAll();
         // コンソールよりListの中身を確認する
         //System.out.println(items.toString());
         
-     // 画面で利用する変数としてitemsをセットします
+     // 画面で利用する変数としてitemsをセット
+        //model.addAttribute("items", items);
+    	//return "item/index";
+    	
+    	 // DELETED_ATがnullのデータのみを検索
+        List<Item> items = this.itemService.findByDeletedAtIsNull();
+        // 画面で利用する変数としてitemsをセット
         model.addAttribute("items", items);
-    	return "item/index";
+        // templates\item\index.htmlを表示
+        return "item/index";
     }
 
     // 商品登録ページ表示用
