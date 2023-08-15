@@ -7,11 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "ITEMS")
@@ -83,5 +82,16 @@ public class Item {
 
     public Category getCategory() {
         return this.category;
+    }
+    
+    @Column(name = "STOCK")
+    private Integer stock;
+
+    public Integer getStock() {
+        return this.stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 }
